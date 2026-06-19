@@ -30,6 +30,20 @@ public class CandidateController {
     }
 
     /**
+     * Check if a candidate ID already exists.
+     * @param id Candidate ID to check
+     * @return true if exists, false otherwise
+     */
+    public boolean isIdExist(String id) {
+        for (Candidate c : candidates) {
+            if (c.getId().equalsIgnoreCase(id)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
      * Search candidates by name and type. Returns formatted result strings.
      * @param name Name to search for
      * @param type Candidate type (0, 1, 2)

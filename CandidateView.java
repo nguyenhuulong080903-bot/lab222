@@ -59,7 +59,15 @@ public class CandidateView {
      */
     private void createCandidate(int type) {
         while (true) {
-            String id = Validation.checkInputString("Input Candidate ID: ");
+            String id;
+            while (true) {
+                id = Validation.checkInputString("Input Candidate ID: ");
+                if (controller.isIdExist(id)) {
+                    System.err.println("ID is exist. Please input another ID.");
+                } else {
+                    break;
+                }
+            }
             String firstName = Validation.checkInputString("Input First Name: ");
             String lastName = Validation.checkInputString("Input Last Name: ");
             int birthDate = Validation.checkInputBirthDate("Input Birth Date (1900 - Current): ");
