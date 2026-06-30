@@ -1,19 +1,20 @@
 package controller;
 
 import model.Candidate;
+import service.CandidateService;
 import java.util.ArrayList;
 
 /**
- * Controller class to manage the business logic of candidates.
+ * Controller class to manage the flow between View and Service layers.
  */
 public class CandidateController {
-    private ArrayList<Candidate> candidates;
+    private CandidateService service;
 
     /**
-     * Constructor initializes the candidates list.
+     * Constructor initializes the service.
      */
     public CandidateController() {
-        this.candidates = new ArrayList<>();
+        this.service = new CandidateService();
     }
 
     /**
@@ -22,11 +23,7 @@ public class CandidateController {
      * @return true if added successfully, false otherwise
      */
     public boolean addCandidate(Candidate candidate) {
-        if (candidate != null) {
-            candidates.add(candidate);
-            return true;
-        }
-        return false;
+        return service.addCandidate(candidate);
     }
 
     /**
@@ -35,12 +32,7 @@ public class CandidateController {
      * @return true if exists, false otherwise
      */
     public boolean isIdExist(String id) {
-        for (Candidate c : candidates) {
-            if (c.getId().equalsIgnoreCase(id)) {
-                return true;
-            }
-        }
-        return false;
+        return service.isIdExist(id);
     }
 
     /**
@@ -50,24 +42,7 @@ public class CandidateController {
      * @return List of formatted strings representing the found candidates
      */
     public ArrayList<String> searchCandidate(String name, int type) {
-        ArrayList<String> result = new ArrayList<>();
-        for (Candidate c : candidates) {
-            if (c.getType() == type) {
-                String fullName = c.getFirstName() + " " + c.getLastName();
-                if (fullName.toLowerCase().contains(name.toLowerCase())) {
-                    result.add(formatCandidate(c));
-                }
-            }
-        }
-        return result;
-    }
-
-    /**
-     * Helper method to format candidate output string.
-     */
-    private String formatCandidate(Candidate c) {
-        return c.getFirstName() + " " + c.getLastName() + " | " + c.getBirthDate() + " | " + 
-               c.getAddress() + " | " + c.getPhone() + " | " + c.getEmail() + " | " + c.getType();
+        return service.searchCandidate(name, type);
     }
 
     /**
@@ -75,19 +50,6 @@ public class CandidateController {
      * @return List of strings for displaying
      */
     public ArrayList<String> getAllCandidatesForDisplay() {
-        ArrayList<String> list = new ArrayList<>();
-        list.add("===========EXPERIENCE CANDIDATE============");
-        for (Candidate c : candidates) {
-            if (c.getType() == 0) list.add(c.getFirstName() + " " + c.getLastName());
-        }
-        list.add("==========FRESHER CANDIDATE==============");
-        for (Candidate c : candidates) {
-            if (c.getType() == 1) list.add(c.getFirstName() + " " + c.getLastName());
-        }
-        list.add("===========INTERN CANDIDATE==============");
-        for (Candidate c : candidates) {
-            if (c.getType() == 2) list.add(c.getFirstName() + " " + c.getLastName());
-        }
-        return list;
+        return service.getAllCandidatesForDisplay();
     }
 }
